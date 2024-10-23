@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
+// 미들웨어로 기능
 authController.authenticate = (req, res, next) => {
   try {
     const tokenString = req.headers.authorization; // Bearer sdlfksdjl..

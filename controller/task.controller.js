@@ -7,7 +7,10 @@ taskController.createTask = async (req, res) => {
   try {
     const { task, isComplete } = req.body;
     // 프론트엔드 요청에서 task, isComplete 수집
-    const newTask = new Task({ task, isComplete });
+    const { userId } = req;
+    // console.log("userId check: ", userId);
+    // authController.authenticate 미들웨어 결과물 사용
+    const newTask = new Task({ task, isComplete, author: userId });
     // Task모델 기반 newTask 생성
     await newTask.save();
     // 데이터베이스 newTask 저장
@@ -19,8 +22,9 @@ taskController.createTask = async (req, res) => {
 
 // Get Task
 taskController.getTask = async (req, res) => {
-  const taskList = await Task.find({});
-  // 조건 없이 모든 데이터 query
+  const taskList = await Task.find({}).populate("author");
+  // mongoose.populate() => author필드값도 같이! ... author필드값은 User참조
+
   res.status(200).json({ status: "ok", data: taskList });
 };
 
